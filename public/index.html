@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send USSD Code</title>
+
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .spinner-border {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center">Send USSD Code</h1>
+
+    <form id="ussdForm" class="text-center">
+        <div class="form-group">
+            <label for="ussdCode">Enter USSD Code</label>
+            <input type="text" id="ussdCode" class="form-control" value="*222#">
+        </div>
+        <button type="submit" class="btn btn-primary">Send USSD</button>
+        <div id="loading" class="text-center mt-3">
+            <div class="spinner-border text-primary mx-auto" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </form>
+
+    <div id="response" class="mt-4 text-center"></div>
+</div>
+
+<script>
+    $('#ussdForm').submit(function(event) {
+        event.preventDefault();
+        var ussdCode = $('#ussdCode').val();
+
+        // Show the loading spinner
+        $('#loading .spinner-border').show();
+
+        $.ajax({
+            type: "POST",
+            url: "/send-ussd",
+            data: { ussd_code: ussdCode },
+            success: function(response) {
+                $('#response').text(response.ussd_response);
+            },
+            complete: function() {
+                // Hide the loading spinner
+                $('#loading .spinner-border').hide();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
