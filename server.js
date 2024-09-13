@@ -48,8 +48,10 @@ bot.on('message', (msg) => {
     if (msg.text === 'Balance') {
         const chatId = msg.chat.id;
 
-        exec(`gammu --config gammu.ini getussd *222*`, (error, stdout, stderr) => {
-            if (error) {
+        exec(`gammu --config gammu.ini getussd *222# 2>&1`, (error, stdout, stderr) => {
+            if (error && stderr) {
+                console.log(error);
+                console.log(stderr);
                 bot.sendMessage(chatId, `Error executing USSD: ${stderr}`);
             } else {
                 bot.sendMessage(chatId, `Balance: ${stdout}`);
