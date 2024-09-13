@@ -56,6 +56,9 @@
             success: function(response) {
                 $('#response').text(response.ussd_response);
             },
+            error: function(error) {
+                $('#response').text(error.responseJSON.ussd_response);
+            },
             complete: function() {
                 // Hide the loading spinner
                 $('#loading .spinner-border').hide();
